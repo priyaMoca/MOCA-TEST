@@ -1,0 +1,19 @@
+.header {
+    height: 50px;
+    width: 100%;
+    background-color: #3b3d42;
+    font-family: 'Segoe UI Symbol';
+    font-weight: bold;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .moca-head{
+    width: fit-content;
+    margin: auto;
+    padding: 16px;
+  }
+
+  .main{
+    padding: 25px;
+  }

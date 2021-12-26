@@ -1,0 +1,95 @@
+<div class="head">
+  <div class="currencySelect">
+    <select (change)="onCurrencyChange($event)">
+      <option *ngFor="let currency of currencies" [value]="currency">{{currency}}</option>
+    </select>
+  </div>
+  <div class="cryptoCurrency"  *ngIf="!cryptoCurrency">
+    <button (click)="getCryptoCurrencies()">Crypto Currencies</button>
+  </div>
+  <div class="exchange"  *ngIf="cryptoCurrency">
+    <button (click)="getExchanges()">Exchanges</button>
+  </div>
+</div>
+
+<table class="table" *ngIf="cryptoCurrency">
+  <thead>
+    <tr>
+      <th>
+        <a style="cursor: pointer;" title="click here to sort Rank" (click)="sortColumn($event, 'rank')">
+          Rank
+          <span id="rank" class="arrow arrow-up"></span>
+        </a>
+      </th>
+      <th>
+        <a style="cursor: pointer;" title="click here to sort Name" (click)="sortColumn($event, 'name')">
+          Name
+          <span id="name" class="arrow"></span>
+        </a>
+      </th>
+      <th>Price</th>
+      <th>1 Day Change</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let coin of coins?.coins">
+      <tr (click)="coin.expanded = !coin.expanded" id="{{coin.id}}">
+        <td style="width: 100px;">{{coin.rank}}</td>
+        <td>
+          <div style="display: flex;">
+            <img class="icon" [src]="coin.icon" width="40px" height="40px">
+            <div style="margin-left: 10px;">
+              <div>{{coin.name}}</div>
+              <div style="margin-top: 5px; color: #707A8A;">{{coin.symbol}}</div>
+            </div>
+          </div>
+
+        </td>
+        <td>
+          <div title="{{coin.price}}">
+            {{coin.price | shortNumber | currency: selectedCurrency }}
+          </div>
+          <div style="margin-top: 5px; color: #707A8A;">Vol: {{coin.volume}}</div>
+        </td>
+        <td>{{coin.priceChange1d}}%</td>
+      </tr>
+      <ng-container *ngIf="coin.expanded">
+        <tr>
+          <td class="expand" colspan="4">
+            <table>
+              <thead>
+                <th>Website</th>
+                <th>Twitter</th>
+                <th>Explorers</th>
+              </thead>
+              <tbody>
+                <td>
+                  <a [href]="coin.websiteUrl" target="_blank"> {{coin.websiteUrl}}</a>
+                </td>
+                <td>
+                  <a [href]="coin.twitterUrl" target="_blank"> {{coin.twitterUrl}}</a>
+                </td>
+                <td>
+                  <div *ngFor="let ex of coin.exp; let i=index">
+                    <a [href]="ex" target="_blank"> {{ex}}</a>
+                  </div>
+                </td>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+    </ng-container>
+
+  </tbody>
+</table>
+
+<div class="row" *ngIf="!cryptoCurrency">
+  <div class="column" *ngFor="let item of exchanges?.supportedExchanges">
+    <div class="card">
+      {{item}}
+    </div>
+  </div>
+</div>
+
+<app-loader [isDataLoaded]="isDataLoaded"></app-loader>
